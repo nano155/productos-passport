@@ -99,5 +99,10 @@ api/messages: Ruta para administrar mensajes de chat.
 views/products
 views/products/:pid
 views/carts/:cid
+api/sessions/register: Ruta para agregar un nuevo usuario
+api/sessions/login: Ruta para loggearse un usuario
+api/sessions/logout: Ruta para salir de la session
+users/login: Ruta para enviar el login desde html
+users/register: Ruta para registrarse desde el html
 Autores
 Urbano Molina Molina
