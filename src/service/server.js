@@ -1,13 +1,15 @@
 
 import express from "express";
 import __dirname from "../utils.js";
-import {create} from "express-handlebars";
+import { create } from "express-handlebars";
 import { Server as server } from 'socket.io'
 import { MessageService } from "./db/messages.service.js";
 import mongoose from 'mongoose'
 import MongoStore from 'connect-mongo'
 import session from 'express-session'
 import cookieParser from "cookie-parser";
+import {initializePassport} from '../config/passport.config.js'
+import passport from "passport";
 
 
 
@@ -25,7 +27,7 @@ export class Server {
     #sessionsRouter;
 
     constructor(options) {
-        const { port, publicPath, productsRouter, cartsRouter, messageRouter, viewsProductsRouter, usersViewsRouter, sessionsRouter, mongo_url  } = options
+        const { port, publicPath, productsRouter, cartsRouter, messageRouter, viewsProductsRouter, usersViewsRouter, sessionsRouter, mongo_url } = options
         this.#port = port
         this.#mongo_url = mongo_url
         this.#publicPath = publicPath
@@ -47,10 +49,10 @@ export class Server {
         const hbs = create({
             extname: '.hbs',
             runtimeOptions: {
-              allowProtoPropertiesByDefault: true,
-              allowProtoMethodsByDefault: true
+                allowProtoPropertiesByDefault: true,
+                allowProtoMethodsByDefault: true
             }
-          });
+        });
 
         this.#app.engine('.hbs', hbs.engine);
 
@@ -60,14 +62,19 @@ export class Server {
         this.#app.use(cookieParser())
 
         this.#app.use(session({
-                        store: MongoStore.create({
-                            mongoUrl:this.#mongo_url ,
-                            ttl:15*60
-                        }),
-                        secret:'coderSecret',
-                        resave:false,
-                        saveUninitialized:true
-                    }))
+            store: MongoStore.create({
+                mongoUrl: this.#mongo_url,
+                ttl: 15 * 60
+            }),
+            secret: 'coderSecret',
+            resave: false,
+            saveUninitialized: true
+        }))
+
+
+        initializePassport()
+        this.#app.use(passport.initialize())
+        this.#app.use(passport.session())
 
         this.#app.use('/api/products', this.#productsRouter)
         this.#app.use('/api/carts', this.#cartsRouter)
@@ -86,15 +93,15 @@ export class Server {
 
         socketServer.on('connection', async (socket) => {
             try {
-                socket.on('connected', (user)=>{
+                socket.on('connected', (user) => {
                     socket.broadcast.emit('conexion', user);
                 });
                 // const users = await MessageService.getUsersUnique();
-        
+
                 socket.on('send-message', async (message) => {
                     try {
-                        const messageSend = await MessageService.addMessage(message); 
-                            socket.broadcast.emit('received-message', messageSend );
+                        const messageSend = await MessageService.addMessage(message);
+                        socket.broadcast.emit('received-message', messageSend);
                     } catch (error) {
                         console.log(error);
                     }
@@ -105,17 +112,17 @@ export class Server {
         })
 
     }
-    async connectMongoDB () {
-                try {
-                    await mongoose.connect(this.#mongo_url,{
-                        dbName:'ecommerse',
-                    });
-                    console.log("Conectado con exito a MongoDB usando Moongose.");
-                  } catch (error) {
-                    console.error("No se pudo conectar a la BD usando Moongoose: " + error);
-                    process.exit();
-                  }     
-                }
-            
+    async connectMongoDB() {
+        try {
+            await mongoose.connect(this.#mongo_url, {
+                dbName: 'ecommerse',
+            });
+            console.log("Conectado con exito a MongoDB usando Moongose.");
+        } catch (error) {
+            console.error("No se pudo conectar a la BD usando Moongoose: " + error);
+            process.exit();
+        }
+    }
+
 
 }

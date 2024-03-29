@@ -1,21 +1,24 @@
 import { Router } from "express";
 import { Users } from "../service/db/users.service.js";
+import passport from "passport";
 
 
 
 const router = Router()
 
-router.post('/register', async (req, res) => {
-    try {
-        const user = req.body
+router.post('/register', passport.authenticate('register',{failureRedirect: '/failregister'}), async (req, res) => {
+  res.send({ status: 'succes', message: `Usuario creado con exito` })
+    
+  // try {
+        // const user = req.body
 
-        const newUser = await Users.register(user)
-        res.send({ status: 'succes', message: `Usuario creado con exito con ID: ${newUser._id}` })
+        // const newUser = await Users.register(user)
+        // res.send({ status: 'succes', message: `Usuario creado con exito con ID: ${newUser._id}` })
 
-    } catch (error) {
-        res.status(403).send({ status: "error", message: error.message })
+    // } catch (error) {
+    //     res.status(403).send({ status: "error", message: error.message })
 
-    }
+    // }
 })
 
 router.post('/login', async (req, res) => {
