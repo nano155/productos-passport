@@ -146,3 +146,16 @@ button{
   transform: scale(1.1);
 }
 
+.button-login{
+  display: flex;
+  padding: 0.5rem 1rem ;
+  gap: 8px;
+  align-items: center;
+}
+ a{
+  text-decoration: none;
+  
+ }
+ a svg{
+  color: #3636a5;
+ }

@@ -18,6 +18,8 @@ loginForm.addEventListener('submit', e =>{
     }).then(result =>{
         if(result.status === 200){
             window.location.replace('/users/')
+        }else{
+            alert('Error to login')
         }
     })
     

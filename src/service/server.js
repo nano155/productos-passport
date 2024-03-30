@@ -25,9 +25,10 @@ export class Server {
     #mongo_url;
     #usersViewsRouter;
     #sessionsRouter;
+    #githubLoginViewsRouter;
 
     constructor(options) {
-        const { port, publicPath, productsRouter, cartsRouter, messageRouter, viewsProductsRouter, usersViewsRouter, sessionsRouter, mongo_url } = options
+        const { port, publicPath, productsRouter, cartsRouter, messageRouter, viewsProductsRouter, usersViewsRouter, sessionsRouter, githubLoginViewsRouter, mongo_url } = options
         this.#port = port
         this.#mongo_url = mongo_url
         this.#publicPath = publicPath
@@ -37,6 +38,7 @@ export class Server {
         this.#viewsProductsRouter = viewsProductsRouter
         this.#sessionsRouter = sessionsRouter
         this.#usersViewsRouter = usersViewsRouter
+        this.#githubLoginViewsRouter = githubLoginViewsRouter
     }
 
 
@@ -82,6 +84,7 @@ export class Server {
         this.#app.use('/views', this.#viewsProductsRouter)
         this.#app.use('/api/sessions', this.#sessionsRouter)
         this.#app.use('/users', this.#usersViewsRouter)
+        this.#app.use('/github', this.#githubLoginViewsRouter)
 
 
         const httpServer = this.#app.listen(this.#port, () => {

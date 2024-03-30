@@ -5,6 +5,8 @@ import { Server } from "./service/server.js"
 import viewsProductsRouter from "./routes/views.products.routes.js"
 import usersViewsRouter from "./routes/users.Views.routes.js"
 import sessionsRouter from "./routes/sessions.routes.js"
+import githubLoginViewsRouter from "./routes/githubLoginViews.routes.js"
+
 
 
 (() => {
@@ -22,7 +24,8 @@ function main() {
         messageRouter:messageRouter,
         viewsProductsRouter:viewsProductsRouter,
         usersViewsRouter:usersViewsRouter,
-        sessionsRouter: sessionsRouter
+        sessionsRouter: sessionsRouter,
+        githubLoginViewsRouter: githubLoginViewsRouter
 
     })
     server.connectMongoDB();

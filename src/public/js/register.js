@@ -20,6 +20,8 @@ registerForm.addEventListener('submit', e =>{
     }).then(result =>{
         if(result.status === 200){
             window.location.replace('/users/login')
+        }else{
+            alert('Error to register')
         }
     })
 })
