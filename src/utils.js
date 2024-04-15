@@ -18,4 +18,6 @@ export const bcryptAdapter = {
     }
 }
 
+export const PRIVATE_KEY = "CoderhouseBackendCourseSecretKeyJWT";
+
 export default __dirname;

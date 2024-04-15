@@ -4,8 +4,9 @@ import messageRouter from './routes/messages.routes.js'
 import { Server } from "./service/server.js"
 import viewsProductsRouter from "./routes/views.products.routes.js"
 import usersViewsRouter from "./routes/users.Views.routes.js"
-import sessionsRouter from "./routes/sessions.routes.js"
+
 import githubLoginViewsRouter from "./routes/githubLoginViews.routes.js"
+import { SessionRouter } from "./routes/sessions.routes.js"
 
 
 
@@ -15,6 +16,7 @@ import githubLoginViewsRouter from "./routes/githubLoginViews.routes.js"
 
 
 function main() {
+    const sessionRouter = new SessionRouter()
     const server = new Server({
         port: 8080,
         publicPath: '/public',
@@ -24,7 +26,7 @@ function main() {
         messageRouter:messageRouter,
         viewsProductsRouter:viewsProductsRouter,
         usersViewsRouter:usersViewsRouter,
-        sessionsRouter: sessionsRouter,
+        sessionsRouter: sessionRouter.getRouter,
         githubLoginViewsRouter: githubLoginViewsRouter
 
     })

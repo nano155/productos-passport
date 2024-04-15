@@ -32,7 +32,7 @@ export const initializePassport = () => {
             }
             return done(null, user)
         } catch (error) {
-            done(error)
+            return done(error)
         }
       }
     ));
